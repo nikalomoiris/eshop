@@ -6,7 +6,8 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const queryString = searchParams.toString();
-    const url = `${PRODUCT_SERVICE_URL}/products${queryString ? `?${queryString}` : ''}`;
+    const queryPart = queryString ? '?' + queryString : '';
+    const url = `${PRODUCT_SERVICE_URL}/products${queryPart}`;
 
     const response = await fetch(url, {
       headers: {

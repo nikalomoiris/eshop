@@ -34,9 +34,9 @@ export default function ProductsPage() {
         const stock = await inventoryApi.checkStockByProducts(productsWithSku);
         
         const stockMap: Record<string, StockStatus> = {};
-        Object.entries(stock).forEach(([id, info]) => {
+        for (const [id, info] of Object.entries(stock)) {
           stockMap[id] = info.status;
-        });
+        }
         setStockInfo(stockMap);
       } catch (err) {
         setError('Failed to load products. Please try again later.');

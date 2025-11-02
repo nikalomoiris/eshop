@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { use } from 'react';
+import { use, useEffect, useState } from 'react';
 import { Container } from '@/components/layout/container';
 import { ProductDetail } from '@/components/product/product-detail';
 import { ReviewList } from '@/components/review/review-list';
