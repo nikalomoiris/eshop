@@ -1,12 +1,15 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { Select } from '@/components/ui/select';
 import { Alert } from '@/components/ui/alert';
 import { Spinner } from '@/components/ui/spinner';
+import { categoryApi } from '@/lib/api/categories';
+import { Category } from '@/lib/types/category';
 
 interface ProductFormData {
   name: string;
@@ -31,12 +34,29 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
     imageUrl: initialData?.imageUrl || '',
   });
 
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loadingCategories, setLoadingCategories] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
+  // Fetch categories on mount
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const data = await categoryApi.getCategories();
+        setCategories(data);
+      } catch (err) {
+        console.error('Failed to load categories:', err);
+      } finally {
+        setLoadingCategories(false);
+      }
+    }
+    fetchCategories();
+  }, []);
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -149,14 +169,22 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
 
       <div className="space-y-2">
         <Label htmlFor="category">Category</Label>
-        <Input
+        <Select
           id="category"
           name="category"
           value={formData.category}
           onChange={handleChange}
-          placeholder="Enter category"
-          disabled={isSubmitting}
-        />
+          disabled={isSubmitting || loadingCategories}
+        >
+          <option value="">
+            {loadingCategories ? 'Loading categories...' : 'Select a category (optional)'}
+          </option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.name}>
+              {cat.name}
+            </option>
+          ))}
+        </Select>
       </div>
 
       <div className="space-y-2">
