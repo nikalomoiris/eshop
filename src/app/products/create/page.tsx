@@ -51,8 +51,11 @@ export default function CreateProductPage() {
         categoryIds,
       };
 
+      console.log('Sending product data:', productData);
+
       // Call API to create product
       const createdProduct = await productApi.createProduct(productData);
+      console.log('Product created:', createdProduct);
 
       // Upload image if provided
       if (formData.imageFile && createdProduct.id) {
