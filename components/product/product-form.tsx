@@ -12,7 +12,6 @@ interface ProductFormData {
   name: string;
   description: string;
   price: string;
-  sku: string;
   category: string;
   imageUrl: string;
 }
@@ -28,7 +27,6 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
     name: initialData?.name || '',
     description: initialData?.description || '',
     price: initialData?.price || '',
-    sku: initialData?.sku || '',
     category: initialData?.category || '',
     imageUrl: initialData?.imageUrl || '',
   });
@@ -61,10 +59,6 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
       setError('Valid price is required');
       return;
     }
-    if (!formData.sku.trim()) {
-      setError('SKU is required');
-      return;
-    }
 
     setIsSubmitting(true);
 
@@ -78,7 +72,6 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
             name: '',
             description: '',
             price: '',
-            sku: '',
             category: '',
             imageUrl: '',
           });
@@ -133,39 +126,25 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="price">
-            Price <span className="text-red-600">*</span>
-          </Label>
-          <Input
-            id="price"
-            name="price"
-            type="number"
-            step="0.01"
-            min="0"
-            value={formData.price}
-            onChange={handleChange}
-            placeholder="0.00"
-            required
-            disabled={isSubmitting}
-          />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="sku">
-            SKU <span className="text-red-600">*</span>
-          </Label>
-          <Input
-            id="sku"
-            name="sku"
-            value={formData.sku}
-            onChange={handleChange}
-            placeholder="Enter SKU"
-            required
-            disabled={isSubmitting}
-          />
-        </div>
+      <div className="space-y-2">
+        <Label htmlFor="price">
+          Price <span className="text-red-600">*</span>
+        </Label>
+        <Input
+          id="price"
+          name="price"
+          type="number"
+          step="0.01"
+          min="0"
+          value={formData.price}
+          onChange={handleChange}
+          placeholder="0.00"
+          required
+          disabled={isSubmitting}
+        />
+        <p className="text-xs text-slate-500">
+          SKU will be automatically generated based on the product name
+        </p>
       </div>
 
       <div className="space-y-2">
