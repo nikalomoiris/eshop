@@ -60,21 +60,32 @@ export default function CreateProductPage() {
       // Upload image if provided
       if (formData.imageFile && createdProduct.id) {
         try {
+          console.log('Uploading image:', formData.imageFile.name);
           const imageFormData = new FormData();
           imageFormData.append('file', formData.imageFile);
 
-          const response = await fetch(`/api/products/${createdProduct.id}/images`, {
+          // Upload directly to backend to avoid Next.js body size limit
+          const backendUrl = process.env.NEXT_PUBLIC_PRODUCT_SERVICE_URL || 'http://localhost:8080/api';
+          const response = await fetch(`${backendUrl}/products/${createdProduct.id}/images`, {
             method: 'POST',
             body: imageFormData,
           });
 
+          console.log('Image upload response status:', response.status);
+          
           if (!response.ok) {
-            console.error('Failed to upload image:', await response.text());
+            const errorText = await response.text();
+            console.error('Failed to upload image. Status:', response.status, 'Error:', errorText);
+          } else {
+            const result = await response.text();
+            console.log('Image uploaded successfully:', result);
           }
         } catch (err) {
           console.error('Failed to upload image:', err);
           // Continue anyway - product was created successfully
         }
+      } else {
+        console.log('No image file to upload or product ID missing');
       }
 
       // Redirect to product detail page after successful creation
@@ -84,6 +95,10 @@ export default function CreateProductPage() {
     } catch (error) {
       // Re-throw the error so ProductForm can display it
       console.error('Error creating product:', error);
+      if (error instanceof Error) {
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
+      }
       throw error;
     }
   };
