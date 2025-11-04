@@ -87,6 +87,10 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
       setError('Valid price is required');
       return;
     }
+    if (!formData.category) {
+      setError('Please select a category');
+      return;
+    }
 
     setIsSubmitting(true);
 
@@ -176,16 +180,19 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="category">Category</Label>
+        <Label htmlFor="category">
+          Category <span className="text-red-600">*</span>
+        </Label>
         <Select
           id="category"
           name="category"
           value={formData.category}
           onChange={handleChange}
           disabled={isSubmitting || loadingCategories}
+          required
         >
           <option value="">
-            {loadingCategories ? 'Loading categories...' : 'Select a category (optional)'}
+            {loadingCategories ? 'Loading categories...' : 'Select a category'}
           </option>
           {categories.map((cat) => (
             <option key={cat.id} value={cat.name}>
