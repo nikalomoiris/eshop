@@ -6,7 +6,8 @@ export interface Product {
   sku: string;
   category?: string; // For display purposes
   categoryIds?: number[]; // From backend
-  imageUrl?: string; // For display purposes
+  imageUrl?: string; // For display purposes (deprecated - use imageUrls)
+  imageUrls?: string[]; // Array of image URLs from backend
   imagesIds?: number[]; // From backend
   createdAt?: string;
   updatedAt?: string;

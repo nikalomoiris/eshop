@@ -9,6 +9,7 @@ class ApiClient {
     options?: RequestInit
   ): Promise<T> {
     try {
+      console.log('API Request:', url, options);
       const response = await fetch(url, {
         ...options,
         headers: {
@@ -16,6 +17,8 @@ class ApiClient {
           ...options?.headers,
         },
       });
+
+      console.log('API Response status:', response.status);
 
       if (!response.ok) {
         const error: ApiError = {
@@ -25,17 +28,23 @@ class ApiClient {
 
         try {
           const errorData = await response.json();
-          error.message = errorData.message || error.message;
+          console.error('API Error data:', errorData);
+          error.message = errorData.message || errorData.error || error.message;
           error.errors = errorData.errors;
         } catch {
           // Response is not JSON, use default error message
+          const text = await response.text();
+          console.error('API Error text:', text);
         }
 
         throw error;
       }
 
-      return await response.json();
+      const data = await response.json();
+      console.log('API Response data:', data);
+      return data;
     } catch (error) {
+      console.error('API Client error:', error);
       if ((error as ApiError).status) {
         throw error;
       }

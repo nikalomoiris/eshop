@@ -44,15 +44,22 @@ export function ProductDetail({ product, stockStatus = 'in-stock' }: ProductDeta
     setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
   };
 
+  // Get the first image URL from imageUrls array, or fall back to imageUrl
+  const imageUrl = product.imageUrls?.[0] || product.imageUrl;
+  // If image URL is relative (starts with /), prepend backend base URL
+  const displayImageUrl = imageUrl?.startsWith('/') 
+    ? `http://localhost:8080${imageUrl}`
+    : imageUrl;
+
   return (
     <div className="grid gap-8 md:grid-cols-2">
       {/* Product Image */}
       <Card>
         <CardContent className="p-6">
           <div className="relative aspect-square overflow-hidden rounded-lg bg-slate-100">
-            {product.imageUrl ? (
+            {displayImageUrl ? (
               <Image
-                src={product.imageUrl}
+                src={displayImageUrl}
                 alt={product.name}
                 fill
                 className="object-cover"
