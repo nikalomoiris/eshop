@@ -16,7 +16,7 @@ interface ProductFormData {
   description: string;
   price: string;
   category: string;
-  imageUrl: string;
+  imageFile: File | null;
 }
 
 interface ProductFormProps {
@@ -31,7 +31,7 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
     description: initialData?.description || '',
     price: initialData?.price || '',
     category: initialData?.category || '',
-    imageUrl: initialData?.imageUrl || '',
+    imageFile: null,
   });
 
   const [categories, setCategories] = useState<Category[]>([]);
@@ -65,6 +65,14 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
     }));
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    setFormData((prev) => ({
+      ...prev,
+      imageFile: file,
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -93,7 +101,7 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
             description: '',
             price: '',
             category: '',
-            imageUrl: '',
+            imageFile: null,
           });
         }
       }
@@ -188,16 +196,23 @@ export function ProductForm({ onSubmit, initialData, isEdit = false }: ProductFo
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="imageUrl">Image URL</Label>
+        <Label htmlFor="imageFile">Product Image</Label>
         <Input
-          id="imageUrl"
-          name="imageUrl"
-          type="url"
-          value={formData.imageUrl}
-          onChange={handleChange}
-          placeholder="https://example.com/image.jpg"
+          id="imageFile"
+          name="imageFile"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
           disabled={isSubmitting}
         />
+        {formData.imageFile && (
+          <p className="text-xs text-slate-600">
+            Selected: {formData.imageFile.name}
+          </p>
+        )}
+        <p className="text-xs text-slate-500">
+          Upload a product image (optional)
+        </p>
       </div>
 
       <div className="flex gap-4">
