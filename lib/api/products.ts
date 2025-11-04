@@ -37,4 +37,25 @@ export const productApi = {
   async getCategories(): Promise<string[]> {
     return apiClient.get<string[]>(`${BASE_URL}/products/categories`);
   },
+
+  /**
+   * Create a new product
+   */
+  async createProduct(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
+    return apiClient.post<Product>(`${BASE_URL}/products`, product);
+  },
+
+  /**
+   * Update an existing product
+   */
+  async updateProduct(id: string, product: Partial<Product>): Promise<Product> {
+    return apiClient.put<Product>(`${BASE_URL}/products/${id}`, product);
+  },
+
+  /**
+   * Delete a product
+   */
+  async deleteProduct(id: string): Promise<void> {
+    return apiClient.delete(`${BASE_URL}/products/${id}`);
+  },
 };

@@ -1,0 +1,55 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { Container } from '@/components/layout/container';
+import { ProductForm } from '@/components/product/product-form';
+import { Card } from '@/components/ui/card';
+import { productApi } from '@/lib/api/products';
+
+export default function CreateProductPage() {
+  const router = useRouter();
+
+  const handleSubmit = async (formData: {
+    name: string;
+    description: string;
+    price: string;
+    sku: string;
+    category: string;
+    imageUrl: string;
+  }) => {
+    // Transform form data to match Product interface
+    const productData = {
+      name: formData.name,
+      description: formData.description,
+      price: Number.parseFloat(formData.price),
+      sku: formData.sku,
+      category: formData.category || undefined,
+      imageUrl: formData.imageUrl || undefined,
+    };
+
+    // Call API to create product
+    const createdProduct = await productApi.createProduct(productData);
+
+    // Redirect to product detail page after successful creation
+    setTimeout(() => {
+      router.push(`/products/${createdProduct.id}`);
+    }, 1500);
+  };
+
+  return (
+    <Container>
+      <div className="py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-slate-900">Create New Product</h1>
+          <p className="mt-2 text-slate-600">
+            Add a new product to your inventory
+          </p>
+        </div>
+
+        <Card className="p-6">
+          <ProductForm onSubmit={handleSubmit} />
+        </Card>
+      </div>
+    </Container>
+  );
+}
