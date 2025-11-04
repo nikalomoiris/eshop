@@ -56,7 +56,7 @@ export function ProductDetail({ product, stockStatus = 'in-stock' }: ProductDeta
       {/* Product Image */}
       <Card>
         <CardContent className="p-6">
-          <div className="relative aspect-square overflow-hidden rounded-lg bg-slate-100">
+          <div className="relative aspect-square overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800">
             {displayImageUrl ? (
               <Image
                 src={displayImageUrl}
@@ -67,7 +67,7 @@ export function ProductDetail({ product, stockStatus = 'in-stock' }: ProductDeta
                 priority
               />
             ) : (
-              <div className="flex h-full items-center justify-center text-slate-400">
+              <div className="flex h-full items-center justify-center text-slate-400 dark:text-slate-500">
                 <span className="text-lg">No Image Available</span>
               </div>
             )}
@@ -79,32 +79,32 @@ export function ProductDetail({ product, stockStatus = 'in-stock' }: ProductDeta
       <div className="space-y-6">
         <div>
           <div className="mb-2 flex items-start justify-between gap-4">
-            <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-slate-100">{product.name}</h1>
             <Badge variant={stockBadgeVariant[stockStatus]}>
               {stockLabel[stockStatus]}
             </Badge>
           </div>
           {product.category && (
-            <p className="text-sm text-slate-500">{product.category}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">{product.category}</p>
           )}
         </div>
 
-        <div className="text-3xl font-bold text-slate-900">
+        <div className="text-3xl font-bold text-slate-900 dark:text-slate-100">
           {formatPrice(product.price)}
         </div>
 
         <div>
-          <h2 className="mb-2 text-sm font-semibold text-slate-900">Description</h2>
-          <p className="text-slate-600">{product.description}</p>
+          <h2 className="mb-2 text-sm font-semibold text-slate-900 dark:text-slate-100">Description</h2>
+          <p className="text-slate-600 dark:text-slate-300">{product.description}</p>
         </div>
 
         {/* Quantity Selector */}
         <div>
-          <label className="mb-2 block text-sm font-semibold text-slate-900">
+          <label className="mb-2 block text-sm font-semibold text-slate-900 dark:text-slate-100">
             Quantity
           </label>
           <div className="flex items-center gap-4">
-            <div className="flex items-center border border-slate-300 rounded-md">
+            <div className="flex items-center border border-slate-300 dark:border-slate-600 rounded-md">
               <Button
                 variant="ghost"
                 size="icon"
@@ -113,7 +113,7 @@ export function ProductDetail({ product, stockStatus = 'in-stock' }: ProductDeta
               >
                 <Minus className="h-4 w-4" />
               </Button>
-              <span className="w-12 text-center font-medium">{quantity}</span>
+              <span className="w-12 text-center font-medium dark:text-slate-100">{quantity}</span>
               <Button
                 variant="ghost"
                 size="icon"
