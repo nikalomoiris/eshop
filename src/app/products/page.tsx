@@ -56,8 +56,8 @@ export default function ProductsPage() {
       <Container>
         <div className="mb-8 flex justify-between items-start">
           <div>
-            <h1 className="text-4xl font-bold text-slate-900">All Products</h1>
-            <p className="mt-2 text-slate-600">
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">All Products</h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-300">
               Browse our complete collection of products
             </p>
           </div>
