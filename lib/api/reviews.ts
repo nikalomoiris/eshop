@@ -29,4 +29,18 @@ export const reviewApi = {
     const sum = reviews.reduce((acc, review) => acc + review.rating, 0);
     return sum / reviews.length;
   },
+
+  /**
+   * Upvote a review
+   */
+  async upvoteReview(reviewId: number): Promise<Review> {
+    return apiClient.post<Review>(`${BASE_URL}/reviews/${reviewId}/upvote`);
+  },
+
+  /**
+   * Downvote a review
+   */
+  async downvoteReview(reviewId: number): Promise<Review> {
+    return apiClient.post<Review>(`${BASE_URL}/reviews/${reviewId}/downvote`);
+  },
 };

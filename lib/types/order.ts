@@ -1,8 +1,9 @@
 export interface OrderItem {
-  productId: string;
-  productName: string;
-  quantity: number;
+  id?: number;
+  sku: string;
   price: number;
+  quantity: number;
+  productId: number;
 }
 
 export interface ShippingAddress {
@@ -20,7 +21,7 @@ export interface Order {
   items: OrderItem[];
   total: number;
   status: OrderStatus;
-  shippingAddress: ShippingAddress;
+  shippingAddress?: ShippingAddress;
   createdAt: string;
   updatedAt?: string;
 }
@@ -33,9 +34,10 @@ export type OrderStatus =
   | 'cancelled';
 
 export interface CreateOrderRequest {
-  items: {
-    productId: string;
+  orderLineItemsDtoList: {
+    sku: string;
+    price: number;
     quantity: number;
+    productId: number;
   }[];
-  shippingAddress: ShippingAddress;
 }

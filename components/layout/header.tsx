@@ -47,6 +47,18 @@ export function Header() {
             >
               Orders
             </Link>
+            <Link
+              href="/admin/categories"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
+            >
+              Categories
+            </Link>
+            <Link
+              href="/admin/inventory"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
+            >
+              Inventory
+            </Link>
             <Link href="/cart" className="relative">
               <Button variant="ghost" size="icon">
                 <ShoppingCart className="h-5 w-5" />
