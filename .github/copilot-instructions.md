@@ -4,8 +4,9 @@
 Purpose: Give an AI coding agent the minimal, actionable knowledge to be productive in this codebase. Keep edits small, preserve existing conventions, and point to concrete files/examples.
 
 1) Big picture (why and where)
-- Frontend only: this repo is the Next.js App (Next 16 / App Router) for an e‑commerce frontend. See `ARCHITECTURE.md` and `src/app/` for routing structure.
+- Frontend only: this repo is the Next.js App (Next.js 16 / App Router, React 19) for an e‑commerce frontend. See `ARCHITECTURE.md` and `src/app/` for routing structure.
 - The frontend calls four backend microservices (product, order, review, inventory) running on ports 8080–8083. Default envs live in `.env.local` and docs in `README.md` / `DEVELOPMENT.md`.
+- React Compiler is enabled via `babel-plugin-react-compiler` for automatic optimizations.
 
 2) Key locations (start here)
 - Root scripts & runtime: `package.json` (scripts: `dev`, `build`, `start`, `lint`).
@@ -23,11 +24,12 @@ Purpose: Give an AI coding agent the minimal, actionable knowledge to be product
 - Backend: start the microservices (outside this repo) via `docker-compose up -d` in the microservices root; the frontend expects the services on ports 8080/8081/8082/8083.
 
 4) Project-specific conventions (do this, not generic rules)
-- App Router pages live under `src/app/` and use the Next 16 file conventions. Add server components by default; add `'use client'` only inside components that use state/hooks/events.
+- App Router pages live under `src/app/` and use the Next.js 16 file conventions. Add server components by default; add `'use client'` only inside components that use state/hooks/events. React 19 server components are the default.
 - Naming: components are PascalCase (file name kebab-case). Example: `components/product/product-card.tsx` exports `ProductCard`.
 - Styling: Tailwind v4 utilities with `cn()` helper in `lib/utils/cn.ts`. Prefer `cn()` when merging conditional classes.
 - State: The cart store (`store/cart.ts`) persists to localStorage — updates must maintain the same action signatures (addItem, removeItem, updateQuantity, clearCart).
 - API client: use `lib/api/client.ts` for HTTP behavior (interceptors, error mapping). All service wrappers call the client — prefer adding new endpoints in matching service files (e.g., `lib/api/products.ts`).
+- Images: Use Next.js Image component with configured remote patterns for product images from backend (see `next.config.ts`).
 
 5) Integration & network assumptions
 - Local dev expects backend services reachable at the env vars shown in `.env.local` (e.g. `NEXT_PUBLIC_PRODUCT_SERVICE_URL=http://localhost:8080/api`). Do not hardcode URLs; use `process.env.NEXT_PUBLIC_*`.
