@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { use } from 'react';
+import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import { CheckCircle, Package } from 'lucide-react';
 import { Container } from '@/components/layout/container';
@@ -112,9 +111,9 @@ export default function OrderDetailPage({
                 <div className="border-t border-slate-200 pt-4">
                   <h3 className="mb-3 font-semibold">Order Items</h3>
                   <div className="space-y-3">
-                    {order.items.map((item, index) => (
+                    {order.items.map((item) => (
                       <div
-                        key={index}
+                        key={item.productId}
                         className="flex items-center justify-between rounded-lg border border-slate-200 p-3"
                       >
                         <div className="flex items-center gap-3">
@@ -164,8 +163,8 @@ export default function OrderDetailPage({
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    {order.items.map((item, index) => (
-                      <div key={index} className="flex justify-between text-sm">
+                    {order.items.map((item) => (
+                      <div key={item.productId} className="flex justify-between text-sm">
                         <span className="text-slate-600">
                           {item.productName} × {item.quantity}
                         </span>

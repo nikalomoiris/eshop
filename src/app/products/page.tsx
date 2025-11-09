@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { Container } from '@/components/layout/container';
 import { ProductGrid } from '@/components/product/product-grid';
 import { Spinner } from '@/components/ui/spinner';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import { productApi } from '@/lib/api/products';
 import { inventoryApi } from '@/lib/api/inventory';
 import { Product } from '@/lib/types/product';
@@ -34,9 +36,9 @@ export default function ProductsPage() {
         const stock = await inventoryApi.checkStockByProducts(productsWithSku);
         
         const stockMap: Record<string, StockStatus> = {};
-        Object.entries(stock).forEach(([id, info]) => {
+        for (const [id, info] of Object.entries(stock)) {
           stockMap[id] = info.status;
-        });
+        }
         setStockInfo(stockMap);
       } catch (err) {
         setError('Failed to load products. Please try again later.');
@@ -52,11 +54,16 @@ export default function ProductsPage() {
   return (
     <div className="py-12">
       <Container>
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-slate-900">All Products</h1>
-          <p className="mt-2 text-slate-600">
-            Browse our complete collection of products
-          </p>
+        <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="text-4xl font-bold text-slate-900 dark:text-slate-100">All Products</h1>
+            <p className="mt-2 text-slate-600 dark:text-slate-300">
+              Browse our complete collection of products
+            </p>
+          </div>
+          <Link href="/products/create">
+            <Button>Create New Product</Button>
+          </Link>
         </div>
 
         {loading && (

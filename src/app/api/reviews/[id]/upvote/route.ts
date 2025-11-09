@@ -2,30 +2,37 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const REVIEW_SERVICE_URL = process.env.NEXT_PUBLIC_REVIEW_SERVICE_URL || 'http://localhost:8082/api';
 
-// GET reviews for a product
-export async function GET(
+export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await params;
-    const url = `${REVIEW_SERVICE_URL}/reviews/product/${id}`;
+    const url = `${REVIEW_SERVICE_URL}/reviews/${id}/upvote`;
 
     const response = await fetch(url, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
     if (!response.ok) {
-      return NextResponse.json([], { status: 200 }); // Return empty array if no reviews
+      const error = await response.text();
+      console.error('Error upvoting review:', error);
+      return NextResponse.json(
+        { error: 'Failed to upvote review' },
+        { status: response.status }
+      );
     }
 
     const data = await response.json();
-    console.log(`Reviews for product ${id} API Response:`, JSON.stringify(data, null, 2));
     return NextResponse.json(data);
   } catch (error) {
-    console.error('Error fetching reviews:', error);
-    return NextResponse.json([], { status: 200 }); // Return empty array on error
+    console.error('Error upvoting review:', error);
+    return NextResponse.json(
+      { error: 'Failed to upvote review' },
+      { status: 500 }
+    );
   }
 }

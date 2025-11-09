@@ -6,7 +6,8 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const queryString = searchParams.toString();
-    const url = `${PRODUCT_SERVICE_URL}/products${queryString ? `?${queryString}` : ''}`;
+    const queryPart = queryString ? '?' + queryString : '';
+    const url = `${PRODUCT_SERVICE_URL}/products${queryPart}`;
 
     const response = await fetch(url, {
       headers: {
@@ -34,6 +35,49 @@ export async function GET(request: NextRequest) {
     console.error('Error fetching products:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    console.log('Creating product with data:', body);
+    const url = `${PRODUCT_SERVICE_URL}/products`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    console.log('Backend response status:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Backend error:', errorText);
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch {
+        errorData = { error: errorText || 'Failed to create product' };
+      }
+      return NextResponse.json(
+        errorData,
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
+    console.log('Product created successfully:', data);
+    return NextResponse.json(data, { status: 201 });
+  } catch (error) {
+    console.error('Error creating product:', error);
+    return NextResponse.json(
+      { error: 'Internal server error', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     );
   }

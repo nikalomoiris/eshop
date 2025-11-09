@@ -15,17 +15,17 @@ export function CartItem({ item }: Readonly<CartItemProps>) {
   const { updateQuantity, removeItem } = useCartStore();
 
   const incrementQuantity = () => {
-    updateQuantity(item.product.id, item.quantity + 1);
+    updateQuantity(String(item.product.id), item.quantity + 1);
   };
 
   const decrementQuantity = () => {
     if (item.quantity > 1) {
-      updateQuantity(item.product.id, item.quantity - 1);
+      updateQuantity(String(item.product.id), item.quantity - 1);
     }
   };
 
   const handleRemove = () => {
-    removeItem(item.product.id);
+    removeItem(String(item.product.id));
   };
 
   return (

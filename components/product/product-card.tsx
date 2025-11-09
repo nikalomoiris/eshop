@@ -38,10 +38,10 @@ export function ProductCard({ product, stockStatus = 'in-stock' }: ProductCardPr
 
   return (
     <Link href={`/products/${product.id}`}>
-      <Card className="h-full transition-shadow hover:shadow-md">
+      <Card className="h-full transition-shadow hover:shadow-md dark:hover:shadow-slate-700">
         <CardContent className="p-4">
           {/* Product Image */}
-          <div className="relative aspect-square mb-4 overflow-hidden rounded-md bg-slate-100">
+          <div className="relative aspect-square mb-4 overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800">
             {product.imageUrl ? (
               <Image
                 src={product.imageUrl}
@@ -51,7 +51,7 @@ export function ProductCard({ product, stockStatus = 'in-stock' }: ProductCardPr
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             ) : (
-              <div className="flex h-full items-center justify-center text-slate-400">
+              <div className="flex h-full items-center justify-center text-slate-400 dark:text-slate-500">
                 No Image
               </div>
             )}
@@ -60,7 +60,7 @@ export function ProductCard({ product, stockStatus = 'in-stock' }: ProductCardPr
           {/* Product Info */}
           <div className="space-y-2">
             <div className="flex items-start justify-between gap-2">
-              <h3 className="font-semibold text-slate-900 line-clamp-2">
+              <h3 className="font-semibold text-slate-900 dark:text-slate-100 line-clamp-2">
                 {product.name}
               </h3>
               <Badge variant={stockBadgeVariant[stockStatus]}>
@@ -68,16 +68,16 @@ export function ProductCard({ product, stockStatus = 'in-stock' }: ProductCardPr
               </Badge>
             </div>
             
-            <p className="text-sm text-slate-600 line-clamp-2">
+            <p className="text-sm text-slate-600 dark:text-slate-300 line-clamp-2">
               {product.description}
             </p>
             
             <div className="flex items-center justify-between">
-              <span className="text-lg font-bold text-slate-900">
+              <span className="text-lg font-bold text-slate-900 dark:text-slate-100">
                 {formatPrice(product.price)}
               </span>
               {product.category && (
-                <span className="text-xs text-slate-500">{product.category}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">{product.category}</span>
               )}
             </div>
           </div>

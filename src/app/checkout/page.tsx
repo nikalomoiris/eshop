@@ -48,18 +48,19 @@ export default function CheckoutPage() {
       setError(null);
 
       const orderData = {
-        items: items.map((item) => ({
-          productId: item.product.id,
+        orderLineItemsDtoList: items.map((item) => ({
+          sku: item.product.sku,
+          price: item.product.price,
           quantity: item.quantity,
+          productId: Number(item.product.id),
         })),
-        shippingAddress: formData,
       };
 
-      const order = await orderApi.createOrder(orderData);
+      await orderApi.createOrder(orderData);
       
-      // Clear cart and redirect to success page
+      // Clear cart and show success message
       clearCart();
-      router.push(`/orders/${order.id}`);
+      router.push('/orders?success=true');
     } catch (err) {
       setError('Failed to place order. Please try again.');
       console.error('Error creating order:', err);
@@ -83,7 +84,7 @@ export default function CheckoutPage() {
   return (
     <div className="py-12">
       <Container>
-        <h1 className="mb-8 text-4xl font-bold text-slate-900">Checkout</h1>
+        <h1 className="mb-8 text-4xl font-bold text-slate-900 dark:text-slate-100">Checkout</h1>
 
         <form onSubmit={handleSubmit}>
           <div className="grid gap-8 lg:grid-cols-3">
@@ -208,20 +209,20 @@ export default function CheckoutPage() {
                     <div className="space-y-2">
                       {items.map((item) => (
                         <div key={item.product.id} className="flex justify-between text-sm">
-                          <span className="text-slate-600">
+                          <span className="text-slate-600 dark:text-slate-300">
                             {item.product.name} × {item.quantity}
                           </span>
-                          <span className="font-medium">
+                          <span className="font-medium dark:text-slate-100">
                             {formatPrice(item.product.price * item.quantity)}
                           </span>
                         </div>
                       ))}
                     </div>
 
-                    <div className="border-t border-slate-200 pt-4">
+                    <div className="border-t border-slate-200 dark:border-slate-700 pt-4">
                       <div className="flex justify-between">
-                        <span className="font-semibold">Total</span>
-                        <span className="text-xl font-bold">{formatPrice(total)}</span>
+                        <span className="font-semibold dark:text-slate-100">Total</span>
+                        <span className="text-xl font-bold dark:text-slate-100">{formatPrice(total)}</span>
                       </div>
                     </div>
 
