@@ -59,6 +59,12 @@ export function Header() {
             >
               Inventory
             </Link>
+            <Link
+              href="/metrics"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100"
+            >
+              Metrics
+            </Link>
             <Link href="/cart" className="relative">
               <Button variant="ghost" size="icon">
                 <ShoppingCart className="h-5 w-5" />
